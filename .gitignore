@@ -1,0 +1,11 @@
+# Configurations directory (dotenv environments)
+config/*.env
+
+# Dependency directories
+node_modules
+
+# OS related
+.DS_Store
+
+# IDE related
+.idea
