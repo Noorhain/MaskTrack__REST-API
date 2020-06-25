@@ -17,6 +17,10 @@ const maskSchema = new mongoose.Schema({
         required: true,
         default: 'Sin usar'
     },
+    momentos_activacion: {
+        type: Array,
+        default: []
+    },
     user: {
         type: mongoose.Schema.Types.ObjectID,
         required: true
