@@ -24,7 +24,20 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minlength: 4
     },
-    fecha_nacimiento: Date
+    birthdate: Date,
+    avatar: {
+        type: Buffer
+    }
+}, {
+    timestamps: true // Permite rastrar fechas de creacion, actualizacion, etc.
+})
+
+userSchema.pre('save', async function(next) {
+    const user = this
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8)
+    }
+    next()
 })
 
 const User = mongoose.model('User', userSchema);

@@ -1,7 +1,8 @@
-const moment = require('moment-timezone')
+const moment = require('moment')
 
 class DateFormatter {
-    static parseDayMonthYear = (dateInput) => moment(dateInput.toString()).format('DD-MM-YYYY')
+    static parseDayMonthYear = (dateInput) => moment(dateInput).format("DD-MM-YYYY")
+
 }
 
 module.exports = DateFormatter
