@@ -29,5 +29,7 @@ const maskSchema = new mongoose.Schema({
     timestamps: true
 })
 
+//TODO Establecer la relación en el modelo de Usuario
+
 const Mask = mongoose.model('Mask', maskSchema)
 module.exports = Mask
