@@ -29,12 +29,25 @@ const userSchema = new mongoose.Schema({
     birthdate: Date,
     avatar: {
         type: Buffer
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }],
 }, {
     timestamps: true // Permite rastrar fechas de creacion, actualizacion, etc.
 })
 
-/** Mongoose 'pre' middleware **/
+/** User Virtuals **/
+userSchema.virtual('masks', {
+    ref: 'Mask',
+    localField: '_id',
+    foreignField: 'user'
+})
+
+/** User 'pre' middleware **/
 userSchema.pre('save', async function (next) {
     const user = this
     if (user.isModified('password')) {
@@ -43,7 +56,7 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-/** Mongoose static methods **/
+/** User static methods **/
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({email})
     if (!user) {
@@ -56,7 +69,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
     }
     return user
 }
-
 
 const User = mongoose.model('User', userSchema);
 module.exports = User
