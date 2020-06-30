@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
+const Mask = require('./mask')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -37,7 +40,7 @@ const userSchema = new mongoose.Schema({
         }
     }],
 }, {
-    timestamps: true // Permite rastrar fechas de creacion, actualizacion, etc.
+    timestamps: true
 })
 
 /** User Virtuals **/
@@ -56,6 +59,11 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
+userSchema.pre('remove', async function (next) {
+    const user = this
+    await Mask.deleteMany({user: user._id})
+})
+
 /** User static methods **/
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({email})
@@ -68,6 +76,16 @@ userSchema.statics.findByCredentials = async (email, password) => {
         throw new Error('Unable to log in')
     }
     return user
+}
+
+/** User custom methods **/
+userSchema.methods.generateToken = async function () {
+    const user = this
+    const token = jwt.sign({_id: user._id.toString()},
+        process.env.JWT_SECRET)
+    user.tokens = user.tokens.concat({token})
+    await user.save()
+    return token
 }
 
 const User = mongoose.model('User', userSchema);

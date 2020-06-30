@@ -1,7 +1,7 @@
 const DateFormatter = require('../dateUtils/DateFormatter')
 
 class UserDataFormatter {
-    static removeAccesoryData = (user) => {
+    static prepareData = (user) => {
         const formattedBirthDate = DateFormatter.parseDayMonthYear(user.birthdate)
         return {
             username: user.username,
