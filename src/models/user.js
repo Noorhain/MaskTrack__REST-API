@@ -79,6 +79,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 }
 
 /** User custom methods **/
+//TODO Autorrefrescado de tokens - Ver favoritos del navegador
 userSchema.methods.generateToken = async function () {
     const user = this
     const token = jwt.sign({_id: user._id.toString()},
