@@ -18,7 +18,7 @@ router.post('/users', async (req, res) => {
 })
 
 // TODO enviar solamente los datos necesarios desde la BD
-router.post('/users/login', auth, async (req, res) => {
+router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateToken()
@@ -48,6 +48,11 @@ router.get('/users/me/:id', async (req, res) => {
         res.status(400).send(error)
     }
 })
+
+router.get('/users/me', auth, async (req, res) => {
+    const formattedUser = UserDataFormatter.prepareData(req.user)
+    res.send(formattedUser);
+});
 
 router.get('/users', async (req, res) => {
     try {
