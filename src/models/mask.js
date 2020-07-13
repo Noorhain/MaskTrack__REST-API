@@ -4,20 +4,23 @@ const maskSchema = new mongoose.Schema({
         type: Array,
         default: [
             'Quirurjica',
-            'FFP2'
+            'FFP2',
+            'KN95'
         ],
     },
-    fecha_compra: Date,
-    tiempo_uso: {
-        type: Array,
-        default: []
-    },
+    purchased: Date,
+    usage: Date,
     status: {
         type: 'String',
         required: true,
         default: 'Sin usar'
     },
-    momentos_activacion: {
+    using_now: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    times_used: {
         type: Array,
         default: []
     },

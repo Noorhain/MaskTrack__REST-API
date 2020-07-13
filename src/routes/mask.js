@@ -2,6 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const auth = require('../middleware/auth')
 const Mask = require('../models/mask')
+const MaskValidator = require('../utils/maskUtils/MaskValidator')
 
 router.get('/masks', auth, async(req, res) => {
     try{
@@ -28,13 +29,33 @@ router.post('/masks', auth, async (req, res) => {
     }
 })
 
+router.patch('/masks/start/:id', auth, async (req, res) => {
+    try{
+         const mask = await Mask.findOne({
+             _id: req.params.id,
+             user: req.user._id
+         })
+        if (!mask)
+            return res.status(404).send('Mask not found')
+        if (MaskValidator.usingMaskForFirstTime(mask))
+            mask.status = "En uso"
+        mask.using_now = true
+        mask.times_used.push(new Date())
+        console.log(mask)
+        res.status(201).send()
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
 router.delete('/masks/:id', auth, async (req, res) => {
     try {
-        const mask = await Mask.findOne({_id: req.params.id, user: req.user._id});
+        const mask = await Mask.findOne({
+            _id: req.params.id,
+            user: req.user._id});
         if (!mask)
-            return res.status(404).send();
-        await mask.remove();
-        res.status(200).send('Mask removed');
+            return res.status(404).send()
+        await mask.remove()
+        res.status(200).send('Mask removed')
     } catch (error) {
         res.status(500).send(error);
     }

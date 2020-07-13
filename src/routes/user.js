@@ -2,7 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const User = require('../models/user')
 const auth = require('../middleware/auth');
-const UserDataFormatter = require('../utils/dataUtils/UserDataFormatter')
+const UserDataFormatter = require('../utils/userUtils/UserDataFormatter')
 
 /** POST Endpoints */
 
