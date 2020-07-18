@@ -1,8 +1,9 @@
 const express = require('express')
 const router = new express.Router()
-const auth = require('../middleware/auth')
 const Mask = require('../models/mask')
-const MaskValidator = require('../utils/maskUtils/MaskValidator')
+const MaskUtils = require('../utils/maskUtils/MaskUtils')
+const auth = require('../middleware/auth')
+const checkInUse = require('../middleware/checkInUse')
 
 router.get('/masks', auth, async(req, res) => {
     try{
@@ -29,24 +30,40 @@ router.post('/masks', auth, async (req, res) => {
     }
 })
 
-router.patch('/masks/start/:id', auth, async (req, res) => {
-    try{
-         const mask = await Mask.findOne({
-             _id: req.params.id,
-             user: req.user._id
-         })
-        if (!mask)
-            return res.status(404).send('Mask not found')
-        if (MaskValidator.usingMaskForFirstTime(mask))
+router.patch('/masks/start/:id', auth, checkInUse, async (req, res) => {
+    if(!req.isInUse){
+        const mask = req.mask
+        if (MaskUtils.usingMaskForFirstTime(mask))
             mask.status = "En uso"
         mask.using_now = true
         mask.times_used.push(new Date())
-        console.log(mask)
-        res.status(201).send()
-    } catch (error) {
-        res.status(500).send(error)
+        try{
+            await mask.save()
+            res.status(200).send(mask)
+        } catch (error) {
+            res.status(500).send('Error inesperado')
+        }
+    } else {
+        res.status(200).send('START | Este endpoint no debería estar habilitado')
     }
 })
+
+router.patch('/masks/stop/:id', auth, checkInUse, async (req, res) => {
+    if(req.isInUse){
+        const mask = req.mask
+        mask.using_now = false
+        mask.times_used.push(new Date())
+        try{
+            await mask.save()
+            res.status(200).send(mask)
+        } catch (error) {
+            res.status(500).send('Error inesperado')
+        }
+    } else {
+        res.status(200).send('STOP | Este endpoint no debería estar habilitado')
+    }
+})
+
 router.delete('/masks/:id', auth, async (req, res) => {
     try {
         const mask = await Mask.findOne({
@@ -60,7 +77,5 @@ router.delete('/masks/:id', auth, async (req, res) => {
         res.status(500).send(error);
     }
 })
-
-
 
 module.exports = router
