@@ -44,7 +44,7 @@ router.patch('/masks/start/:id', auth, checkInUse, async (req, res) => {
             res.status(500).send('Error inesperado')
         }
     } else {
-        res.status(200).send('START | Este endpoint no debería estar habilitado')
+        res.status(200).send('START | Endpoint should be disabled')
     }
 })
 
@@ -52,15 +52,17 @@ router.patch('/masks/stop/:id', auth, checkInUse, async (req, res) => {
     if(req.isInUse){
         const mask = req.mask
         mask.using_now = false
-        mask.times_used.push(new Date())
+        MaskUtils.refreshTimeUsed(mask)
+        const duration = MaskUtils.getDuration(mask.usage)
         try{
             await mask.save()
-            res.status(200).send(mask)
+            res.status(200).send({mask, duration}
+            )
         } catch (error) {
             res.status(500).send('Error inesperado')
         }
     } else {
-        res.status(200).send('STOP | Este endpoint no debería estar habilitado')
+        res.status(200).send('STOP | Endpoint should be disabled')
     }
 })
 
