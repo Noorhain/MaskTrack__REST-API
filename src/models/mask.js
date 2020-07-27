@@ -9,7 +9,7 @@ const maskSchema = new mongoose.Schema({
         ],
     },
     purchased: Date,
-    usage: Date,
+    usage: Number,
     status: {
         type: 'String',
         required: true,

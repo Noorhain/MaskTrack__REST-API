@@ -5,8 +5,8 @@ const MaskUtils = require('../utils/maskUtils/MaskUtils')
 const auth = require('../middleware/auth')
 const checkInUse = require('../middleware/checkInUse')
 
-router.get('/masks', auth, async(req, res) => {
-    try{
+router.get('/masks', auth, async (req, res) => {
+    try {
         await req.user.populate({
             path: 'masks'
         }).execPopulate()
@@ -31,17 +31,17 @@ router.post('/masks', auth, async (req, res) => {
 })
 
 router.patch('/masks/start/:id', auth, checkInUse, async (req, res) => {
-    if(!req.isInUse){
+    if (!req.isInUse) {
         const mask = req.mask
         if (MaskUtils.usingMaskForFirstTime(mask))
             mask.status = "En uso"
         mask.using_now = true
         mask.times_used.push(new Date())
-        try{
+        try {
             await mask.save()
             res.status(200).send(mask)
         } catch (error) {
-            res.status(500).send('Error inesperado')
+            res.status(500).send('Unexpected error: ' + error.message)
         }
     } else {
         res.status(200).send('START | Endpoint should be disabled')
@@ -49,17 +49,17 @@ router.patch('/masks/start/:id', auth, checkInUse, async (req, res) => {
 })
 
 router.patch('/masks/stop/:id', auth, checkInUse, async (req, res) => {
-    if(req.isInUse){
+    if (req.isInUse) {
         const mask = req.mask
         mask.using_now = false
         MaskUtils.refreshTimeUsed(mask)
         const duration = MaskUtils.getDuration(mask.usage)
-        try{
+        try {
             await mask.save()
             res.status(200).send({mask, duration}
             )
         } catch (error) {
-            res.status(500).send('Error inesperado')
+            res.status(500).send('Unexpected error: ' + error.message)
         }
     } else {
         res.status(200).send('STOP | Endpoint should be disabled')
@@ -70,7 +70,8 @@ router.delete('/masks/:id', auth, async (req, res) => {
     try {
         const mask = await Mask.findOne({
             _id: req.params.id,
-            user: req.user._id});
+            user: req.user._id
+        });
         if (!mask)
             return res.status(404).send()
         await mask.remove()
