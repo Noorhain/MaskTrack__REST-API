@@ -6,9 +6,7 @@ class MaskUtils {
     static refreshTimeUsed = (mask) => {
         const lastIndex = (mask.times_used.length - 1)
         const lastDateRecorded = mask.times_used[lastIndex]
-        // Obtenemos un objeto DURATION con la diferencia del ÚLTIMO PERIODO en milisegundos
         const lastUsageTime = DateFormatter.getTimeDifference(lastDateRecorded)
-        // Procedemos a sumar el último periodo al acumulativo que hay en la BD
         this.updateUsage(mask, lastUsageTime)
     }
 
@@ -20,6 +18,10 @@ class MaskUtils {
     }
 
     static getDuration = (duration) => DateFormatter.humanizeUsage(duration)
+
+    static getMaskTypeReference(maskTypeIdentifier) {
+        return new Mask
+    }
 }
 
 module.exports = MaskUtils

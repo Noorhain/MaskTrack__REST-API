@@ -1,13 +1,5 @@
 const mongoose = require('mongoose');
 const maskSchema = new mongoose.Schema({
-    mask_type: {
-        type: Array,
-        default: [
-            'Quirurjica',
-            'FFP2',
-            'KN95'
-        ],
-    },
     purchased: Date,
     usage: Number,
     status: {
@@ -24,6 +16,11 @@ const maskSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    mask_type_content: {
+        type: mongoose.Schema.Types.ObjectID,
+        ref: 'Mask_Type',
+        required: false
+    },
     user: {
         type: mongoose.Schema.Types.ObjectID,
         required: true
@@ -31,7 +28,6 @@ const maskSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
-
 
 const Mask = mongoose.model('Mask', maskSchema)
 module.exports = Mask

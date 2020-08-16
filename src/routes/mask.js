@@ -1,7 +1,9 @@
 const express = require('express')
 const router = new express.Router()
 const Mask = require('../models/mask')
+const MaskType = require('../models/maskType')
 const MaskUtils = require('../utils/maskUtils/MaskUtils')
+const MaskTypeUtils = require('../utils/maskTypeUtils/MaskTypeUtils')
 const auth = require('../middleware/auth')
 const checkInUse = require('../middleware/checkInUse')
 
@@ -18,13 +20,31 @@ router.get('/masks', auth, async (req, res) => {
 
 router.post('/masks', auth, async (req, res) => {
     const mask = new Mask({
-        ...req.body,
         user: req.user._id,
-        ref: 'User'
+        ref: 'User',
+        mask_type_content: await MaskTypeUtils.getMaskTypeReference(req.body.mask_type_identifier)
     })
     try {
+        await mask.
+            populate('mask_type_content').
+            execPopulate()
         await mask.save()
         res.status(201).send(mask)
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+})
+
+router.post('/masktype', auth, async (req, res) => {
+    try {
+      const maskType=  new MaskType({
+          type_identifier: req.body.type_identifier,
+          type_name: req.body.type_name,
+          type_description: req.body.type_description,
+          estimated_duration: req.body.estimated_duration
+      })
+        await maskType.save()
+        res.status(201).send(maskType)
     } catch (error) {
         res.status(400).send(error.message)
     }
