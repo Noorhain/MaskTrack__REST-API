@@ -11,7 +11,6 @@ class DateFormatter {
     static humanizeUsage = (duration) => humanize(duration, {units: ["h", "m", "s"]})
 
     static parseDayMonthYear = (dateInput) => moment(dateInput).format("DD-MM-YYYY")
-
 }
 
 module.exports = DateFormatter

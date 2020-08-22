@@ -4,6 +4,9 @@ config/*.env
 # Dependency directories
 node_modules
 
+#Docs
+docs
+
 # OS related
 .DS_Store
 
