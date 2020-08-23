@@ -1,7 +1,7 @@
 const DateFormatter = require('./DateFormatter')
 
-class UserDataFormatter {
-    static prepareData = (user) => {
+class UserUtils {
+    static formatUserInfo = (user) => {
         const formattedBirthDate = DateFormatter.parseDayMonthYear(user.birthdate)
         return {
             username: user.username,
@@ -13,4 +13,4 @@ class UserDataFormatter {
     }
 }
 
-module.exports = UserDataFormatter
+module.exports = UserUtils

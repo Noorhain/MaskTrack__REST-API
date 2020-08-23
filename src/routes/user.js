@@ -2,7 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const User = require('../models/user')
 const auth = require('../middleware/auth');
-const UserDataFormatter = require('../utils/UserDataFormatter')
+const UserDataFormatter = require('../utils/UserUtils')
 
 /** POST Endpoints */
 
@@ -41,7 +41,7 @@ router.post('/users/logout', auth, async (req, res) => {
 /** GET Endpoints */
 
 router.get('/users/me', auth, async (req, res) => {
-    const formattedUser = UserDataFormatter.prepareData(req.user)
+    const formattedUser = UserDataFormatter.formatUserInfo(req.user)
     res.send(formattedUser);
 });
 
