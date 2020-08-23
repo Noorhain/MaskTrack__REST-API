@@ -1,11 +1,14 @@
-# Configurations directory (dotenv environments)
-config/*.env
+# environments
+env
 
 # Dependency directories
 node_modules
 
 #Docs
 docs
+
+#Logs
+logs
 
 # OS related
 .DS_Store
