@@ -1,4 +1,4 @@
-const MaskType = require('../../models/maskType')
+const MaskType = require('../models/maskType')
 
 class MaskTypeUtils {
     static getMaskTypeReference = async (maskTypeIdentifier) => {

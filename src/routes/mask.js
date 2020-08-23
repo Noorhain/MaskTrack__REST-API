@@ -2,8 +2,8 @@ const express = require('express')
 const router = new express.Router()
 const Mask = require('../models/mask')
 const MaskType = require('../models/maskType')
-const MaskUtils = require('../utils/maskUtils/MaskUtils')
-const MaskTypeUtils = require('../utils/maskTypeUtils/MaskTypeUtils')
+const MaskUtils = require('../utils/MaskUtils')
+const MaskTypeUtils = require('../utils/MaskTypeUtils')
 const auth = require('../middleware/auth')
 const checkInUse = require('../middleware/checkInUse')
 
@@ -28,6 +28,7 @@ router.get('/masks/:id/info', auth, async(req, res) => {
         await mask.
             populate('mask_type_content').
             execPopulate()
+
         const formattedMask = MaskUtils.formatMaskInfo(mask)
         res.status(200).send(formattedMask)
     } catch (error) {

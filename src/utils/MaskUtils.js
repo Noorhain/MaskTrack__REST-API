@@ -1,4 +1,5 @@
-const DateFormatter = require('../dateUtils/DateFormatter')
+const DateFormatter = require('./DateFormatter')
+const FileUtils = require('./FileUtils')
 
 class MaskUtils {
     static isUsingMaskForFirstTime = (mask) => mask.status === "Sin usar"
@@ -30,6 +31,7 @@ class MaskUtils {
             typeName: mask.mask_type_content.type_name,
             typeDescription: mask.mask_type_content.type_description,
             estimatedDuration: mask.mask_type_content.estimated_duration,
+            caption: FileUtils.stringifyBase64(mask.mask_type_content.caption),
             usage: mask.usage
         }
     }

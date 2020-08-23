@@ -1,4 +1,4 @@
-const DateFormatter = require('../dateUtils/DateFormatter')
+const DateFormatter = require('./DateFormatter')
 
 class UserDataFormatter {
     static prepareData = (user) => {
