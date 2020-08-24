@@ -4,8 +4,7 @@
   "description": "API Service to keep track of the usage of face masks",
   "main": "index.js",
   "scripts": {
-    "dev": "env-cmd -f config/dev.env nodemon src/index.js",
-    "doc": "jsdoc -c ./docs/jsdoc.json"
+    "dev": "env-cmd -f env/dev.env nodemon src/index.js"
   },
   "author": "Alejandro",
   "license": "MIT",
@@ -21,6 +20,7 @@
     "moment": "^2.27.0",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.19",
+    "morgan": "^1.10.0",
     "validator": "^13.1.1",
     "winston": "^3.3.3"
   }
