@@ -4,12 +4,14 @@
   "description": "API Service to keep track of the usage of face masks",
   "main": "index.js",
   "scripts": {
-    "dev": "env-cmd -f env/dev.env nodemon src/index.js"
+    "dev": "env-cmd -f env/dev.env nodemon src/index.js",
+    "test": "jest --config ./jest-config.js"
   },
   "author": "Alejandro",
   "license": "MIT",
   "devDependencies": {
     "env-cmd": "^10.1.0",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4"
   },
   "dependencies": {

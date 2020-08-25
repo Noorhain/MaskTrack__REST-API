@@ -10,6 +10,9 @@ docs
 #Logs
 logs
 
+#Tests
+tests/coverage
+
 # OS related
 .DS_Store
 
