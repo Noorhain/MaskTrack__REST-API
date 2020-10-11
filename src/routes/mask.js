@@ -36,6 +36,16 @@ router.get('/masks/:id/info', auth, async(req, res) => {
     }
 })
 
+//Test only
+router.get('/masksTest', async(req, res) => {
+    try{
+        const masks = await Mask.find({})
+        res.status(200).send(masks);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
 router.post('/masks', auth, async(req, res) => {
     const mask = new Mask({
         user: req.user._id,

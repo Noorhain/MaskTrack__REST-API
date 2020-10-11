@@ -1,6 +1,8 @@
 const cors = require('cors')
 
-module.exports = cors(({
-  origin: process.env.WEB_FRONTEND_CLIENT_URL
-
-}))
+const corsDone = cors({
+  orgin: process.env.WEB_FRONTEND_CLIENT_URL
+})
+module.exports = cors({
+  orgin: process.env.WEB_FRONTEND_CLIENT_URL
+})
