@@ -7,7 +7,7 @@ const MaskTypeUtils = require('../utils/MaskTypeUtils')
 const auth = require('../middleware/auth')
 const checkInUse = require('../middleware/checkInUse')
 
-router.get('/masks', auth, async(req, res) => {
+router.get('/masks', async(req, res) => {
     try {
         await req.user.
             populate({
